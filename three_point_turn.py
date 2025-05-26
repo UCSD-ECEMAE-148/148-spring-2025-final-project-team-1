@@ -14,7 +14,7 @@ class ThreePointTurn(Node):
         # Movement parameters - adjust these based on your car's characteristics
         self.forward_speed = 0.3      # Linear velocity for forward movement
         self.reverse_speed = -0.3     # Linear velocity for reverse movement
-        self.turn_speed = 1.0         # Angular velocity for turning
+        self.turn_speed = 0.5         # Angular velocity for turning
         
         # Timing parameters - adjust based on your car's size and speed
         self.forward_duration = 2.0   # Time to drive forward in seconds
