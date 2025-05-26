@@ -44,49 +44,51 @@ class ThreePointTurn(Node):
         self.get_logger().info('Robot stopped')
     
     def execute_maneuver(self):
-        """Execute the 3-point turn maneuver step by step"""
-        
-        if self.maneuver_complete:
-            return
-        
-        # Initialize step timer
-        if self.step_start_time is None:
-            self.step_start_time = time.time()
-        
-        elapsed_time = time.time() - self.step_start_time
-        
-        # Step 0: Drive forward while turning left
-        if self.current_step == 0:
-            if elapsed_time < self.forward_duration:
-                self.publish_twist(self.forward_speed, self.turn_speed)
-                self.get_logger().info(f'Step 1: Forward + Left turn ({elapsed_time:.1f}s)')
-            else:
-                self.stop_robot()
-                self.current_step = 1
-                self.step_start_time = None
-                time.sleep(0.5)  # Brief pause between steps
-        
-        # Step 1: Reverse while turning right
-        elif self.current_step == 1:
-            if elapsed_time < self.reverse_duration:
-                self.publish_twist(self.reverse_speed, -self.turn_speed)
-                self.get_logger().info(f'Step 2: Reverse + Right turn ({elapsed_time:.1f}s)')
-            else:
-                self.stop_robot()
-                self.current_step = 2
-                self.step_start_time = None
-                time.sleep(0.5)  # Brief pause between steps
-        
-        # Step 2: Drive forward to complete the turn
-        elif self.current_step == 2:
-            if elapsed_time < self.forward_duration:
-                self.publish_twist(self.forward_speed, 0.0)
-                self.get_logger().info(f'Step 3: Forward straight ({elapsed_time:.1f}s)')
-            else:
-                self.stop_robot()
-                self.maneuver_complete = True
-                self.get_logger().info('3-point turn maneuver completed!')
-                self.timer.cancel()  # Stop the timer
+    """Execute the 3-point turn maneuver step by step"""
+
+    if self.maneuver_complete:
+        return
+
+    # Initialize step timer
+    if self.step_start_time is None:
+        self.step_start_time = time.time()
+
+    elapsed_time = time.time() - self.step_start_time
+
+    # Step 0: Reverse while turning left gradually
+    if self.current_step == 0:
+        angles = [-1.0, -0.7, -0.4, -0.1, 0.0]
+        for angle in angles:
+            self.publish_twist(self.reverse_speed, angle)
+            self.get_logger().info(f'Step 1: Reversing with angle {angle}')
+            time.sleep(0.5)
+        self.stop_robot()
+        self.current_step = 1
+        self.step_start_time = None
+        time.sleep(0.5)
+
+    # Step 1: Forward straight for 2 seconds
+    elif self.current_step == 1:
+        if elapsed_time < self.forward_duration:
+            self.publish_twist(self.forward_speed, 0.0)
+            self.get_logger().info(f'Step 2: Forward straight ({elapsed_time:.1f}s)')
+        else:
+            self.stop_robot()
+            self.current_step = 2
+            self.step_start_time = None
+            time.sleep(0.5)
+
+    # Step 2: Reverse again while turning left gradually
+    elif self.current_step == 2:
+        angles = [-1.0, -0.7, -0.4, -0.1, 0.0]
+        for angle in angles:
+            self.publish_twist(self.reverse_speed, angle)
+            self.get_logger().info(f'Step 3: Reversing with angle {angle}')
+            time.sleep(0.5)
+        self.stop_robot()
+        self.maneuver_complete = True
+        self.get_logger().info('3-point turn maneuver completed!')
+        self.timer.cancel()
     
     def emergency_stop(self):
         """Emergency stop function"""
