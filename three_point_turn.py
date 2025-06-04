@@ -8,95 +8,101 @@ class ThreePointTurn(Node):
     def __init__(self):
         super().__init__('three_point_turn')
         
-        # Create ROS2 publisher
+        # UCSD RoboCar uses /cmd_vel topic
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         
-        # Movement parameters - adjust these based on your car's characteristics
-        self.forward_speed = 0.3      # Linear velocity for forward movement
-        self.reverse_speed = -0.3     # Linear velocity for reverse movement
-        self.turn_speed = 0.5         # Angular velocity for turning
+        # UCSD RoboCar specific parameters
+        # Note: Some UCSD RoboCars have reversed polarity
+        self.forward_speed = -0.3   # m/s (negative for forward on this car)
+        self.reverse_speed = 0.3    # m/s (positive for reverse on this car)
+        self.turn_speed = -0.4      # rad/s (negative for right turn)
         
-        # Timing parameters - adjust based on your car's size and speed
-        self.forward_duration = 2.0   # Time to drive forward in seconds
-        self.turn_duration = 2.0      # Time to turn in seconds
-        self.reverse_duration = 2.0   # Time to reverse in seconds
+        # Timing parameters
+        self.reverse_duration_1 = 2.8    # Duration for first reverse+turn
+        self.forward_duration = 3.8      # Duration for straight forward
+        self.reverse_duration_2 = 2.75    # Duration for second reverse+turn
+        self.reverse_straight_duration = 0.1  # Duration for straight reverse
         
         # State tracking
         self.current_step = 0
         self.step_start_time = None
         self.maneuver_complete = False
         
-        # Start the maneuver
-        self.timer = self.create_timer(0.1, self.execute_maneuver)  # 10Hz update rate
+        # Wait for initialization
+        self.get_logger().info('Starting maneuver: Reverse-Right, Forward, Reverse-Right, Reverse-Straight')
+        time.sleep(2.0)
         
-        self.get_logger().info('Starting 3-point turn maneuver')
+        # Start the maneuver
+        self.timer = self.create_timer(0.1, self.execute_maneuver)
     
     def publish_twist(self, linear_x=0.0, angular_z=0.0):
-        """Publish a Twist message with the given linear and angular velocities"""
+        """Publish Twist message"""
         cmd_vel_msg = Twist()
         cmd_vel_msg.linear.x = linear_x
         cmd_vel_msg.angular.z = angular_z
         self.cmd_vel_pub.publish(cmd_vel_msg)
-    
+        
     def stop_robot(self):
         """Stop all robot movement"""
         self.publish_twist(0.0, 0.0)
         self.get_logger().info('Robot stopped')
     
     def execute_maneuver(self):
-    """Execute the 3-point turn maneuver step by step"""
-
-    if self.maneuver_complete:
-        return
-
-    # Initialize step timer
-    if self.step_start_time is None:
-        self.step_start_time = time.time()
-
-    elapsed_time = time.time() - self.step_start_time
-
-    # Step 0: Reverse while turning left gradually
-    if self.current_step == 0:
-        angles = [-1.0, -0.7, -0.4, -0.1, 0.0]
-        for angle in angles:
-            self.publish_twist(self.reverse_speed, angle)
-            self.get_logger().info(f'Step 1: Reversing with angle {angle}')
-            time.sleep(0.5)
-        self.stop_robot()
-        self.current_step = 1
-        self.step_start_time = None
-        time.sleep(0.5)
-
-    # Step 1: Forward straight for 2 seconds
-    elif self.current_step == 1:
-        if elapsed_time < self.forward_duration:
-            self.publish_twist(self.forward_speed, 0.0)
-            self.get_logger().info(f'Step 2: Forward straight ({elapsed_time:.1f}s)')
-        else:
-            self.stop_robot()
-            self.current_step = 2
-            self.step_start_time = None
-            time.sleep(0.5)
-
-    # Step 2: Reverse again while turning left gradually
-    elif self.current_step == 2:
-        angles = [-1.0, -0.7, -0.4, -0.1, 0.0]
-        for angle in angles:
-            self.publish_twist(self.reverse_speed, angle)
-            self.get_logger().info(f'Step 3: Reversing with angle {angle}')
-            time.sleep(0.5)
-        self.stop_robot()
-        self.maneuver_complete = True
-        self.get_logger().info('3-point turn maneuver completed!')
-        self.timer.cancel()
-    
-    def emergency_stop(self):
-        """Emergency stop function"""
-        self.stop_robot()
-        self.maneuver_complete = True
-        if hasattr(self, 'timer'):
-            self.timer.cancel()
-        self.get_logger().warn('Emergency stop activated!')
+        """Execute the maneuver"""
+        
+        if self.maneuver_complete:
+            return
+        
+        # Initialize step timer
+        if self.step_start_time is None:
+            self.step_start_time = time.time()
+        
+        elapsed_time = time.time() - self.step_start_time
+        
+        # Step 0: Reverse while turning right
+        if self.current_step == 0:
+            if elapsed_time < self.reverse_duration_1:
+                self.publish_twist(self.reverse_speed, self.turn_speed)
+                self.get_logger().info(f'Step 1: Reverse + Right turn ({elapsed_time:.1f}s)')
+            else:
+                self.stop_robot()
+                self.current_step = 1
+                self.step_start_time = None
+                time.sleep(1.5)  # Brief pause between steps
+        
+        # Step 1: Forward straight
+        elif self.current_step == 1:
+            if elapsed_time < self.forward_duration:
+                self.publish_twist(self.forward_speed, 0.0)
+                self.get_logger().info(f'Step 2: Forward straight ({elapsed_time:.1f}s)')
+            else:
+                self.stop_robot()
+                self.current_step = 2
+                self.step_start_time = None
+                time.sleep(1.5)  # Brief pause between steps
+        
+        # Step 2: Reverse while turning right
+        elif self.current_step == 2:
+            if elapsed_time < self.reverse_duration_2:
+                self.publish_twist(self.reverse_speed, self.turn_speed)
+                self.get_logger().info(f'Step 3: Reverse + Right turn ({elapsed_time:.1f}s)')
+            else:
+                self.stop_robot()
+                self.current_step = 3
+                self.step_start_time = None
+                time.sleep(1.5)  # Brief pause between steps
+        
+        # Step 3: Reverse straight
+        elif self.current_step == 3:
+            if elapsed_time < self.reverse_straight_duration:
+                self.publish_twist(self.reverse_speed, 0.0)
+                self.get_logger().info(f'Step 4: Reverse straight ({elapsed_time:.1f}s)')
+            else:
+                self.stop_robot()
+                self.maneuver_complete = True
+                self.get_logger().info('Maneuver completed!')
+                self.timer.cancel()
+                time.sleep(1.5)
 
 def main(args=None):
     rclpy.init(args=args)
@@ -105,7 +111,7 @@ def main(args=None):
     try:
         rclpy.spin(three_point_turn)
     except KeyboardInterrupt:
-        three_point_turn.emergency_stop()
+        three_point_turn.stop_robot()
     finally:
         three_point_turn.destroy_node()
         rclpy.shutdown()
