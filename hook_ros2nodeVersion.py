@@ -93,11 +93,6 @@ class ServoRotationNode(Node):
         self.publish_twist(0.0, 0.0)
         self.get_logger().info('Robot stopped')
     
-    def execute_maneuver(self):
-        """Execute the maneuver"""
-        
-        if self.maneuver_complete:
-            return
     def publish_status(self):
         """Publish current rotation status"""
         msg = String()
