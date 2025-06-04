@@ -170,9 +170,9 @@ class ServoRotationNode(Node):
             self.get_logger().info('Step 4: Driving forward...')
             self.publish_twist(self.forward_speed, 0.0)
 
-            #Countdown during drive forward
+            # Countdown during drive forward
             for i in range(int(self.ROTATION_TIME_540)):
-            if not rclpy.ok():
+              if not rclpy.ok():
                     break
               remaining = int(self.ROTATION_TIME_540) - i
               self.current_status = f"Step 4: Drive forward - {remaining}s remaining"
@@ -212,7 +212,7 @@ class ServoRotationNode(Node):
 
             #Countdown during drive forward
             for i in range(int(self.ROTATION_TIME_540)):
-            if not rclpy.ok():
+              if not rclpy.ok():
                     break
               remaining = int(self.ROTATION_TIME_540) - i
               self.current_status = f"Step 4: Drive forward - {remaining}s remaining"
