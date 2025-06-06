@@ -12,7 +12,7 @@ class DriveForward(Node):
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', 10)
         
         # UCSD RoboCar specific parameters (same as your three-point turn)
-        self.forward_speed = -0.3   # m/s (negative for forward on this car)
+        self.forward_speed = 0.3   # m/s (negative for forward on this car)
         
         # Timing parameter
         self.drive_duration = 3.0    # Drive forward for 3 seconds
