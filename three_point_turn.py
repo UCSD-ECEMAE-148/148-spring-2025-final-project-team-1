@@ -13,8 +13,8 @@ class ThreePointTurn(Node):
         
         # UCSD RoboCar specific parameters
         # Note: Some UCSD RoboCars have reversed polarity
-        self.forward_speed = -0.3   # m/s (negative for forward on this car)
-        self.reverse_speed = 0.3    # m/s (positive for reverse on this car)
+        self.forward_speed = 0.3   # m/s (negative for forward on this car)
+        self.reverse_speed = -0.3    # m/s (positive for reverse on this car)
         self.turn_speed = -0.4      # rad/s (negative for right turn)
         
         # Timing parameters
