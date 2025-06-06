@@ -28,7 +28,7 @@ CLOCKWISE = 45           # Medium speed clockwise
 # Timing for 540 degrees (1.5 full rotations)
 # Adjust this value based on your servo's actual speed
 ROTATION_TIME_1080 = 13.0  
-ROTATION_TIME_1080 = 6.0
+ROTATION_TIME_540 = 6.0
 
 def main():
     print("Starting 1080° rotation test...")
