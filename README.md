@@ -38,3 +38,9 @@ https://drive.google.com/file/d/1KutY3HxdIYGCIqWJ8cxIVXh8-trw-SjU/view?resourcek
 - This node commands a mini‐servo motor which lowers the hook until it contacts a designated “hook point” on the chassis, we have magnets on the hook and disabled chassis to help it attach if there are small deviations.
 - Once the hook is lowered to the right position, we command the servo to retract, lifting the chassis’s eyelet snugly against the car’s frame.
 - With the chassis now firmly latched, the car starts driving away.
+
+## Desired Features
+#### Node 4: GPS Navigation to Towing Station
+- Once the chassis is securely hooked, the robocar switches into GPS‐navigation mode
+- It retrieves the predefined latitude and longitude of the towing station, plans a route, and then drives—towing the disabled chassis along that route until it arrives at the exact coordinates
+- Upon reaching the station’s GPS point, the robocar stops, lowers the hook to release the chassis, and confirms that the car has been delivered to the correct location.
