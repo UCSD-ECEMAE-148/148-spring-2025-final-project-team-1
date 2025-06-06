@@ -24,7 +24,7 @@ Our final project implements a fully autonomous tow truck capable of locating, a
 - Inside this node, we run a lightweight computer‐vision model that scans each frame for the disabled chassis (“damsel”).
 - Once a chassis is recognized, the node publishes its relative position and orientation in the car’s coordinate frame.
 
-### Node 2: Three Point Turn
+#### Node 2: Three Point Turn
 - The Detect Damsel node’s output triggers the Three-Point Turn node. As soon as the chassis falls within a predetermined detection range, we execute the three point turn.
   - Steer Hard to Reverse: The car reverses with full‐lock steering (e.g., rear‐wheel drive at a set velocity) until the “damsel” is centered behind the rear bumper.
   - Steer Hard to Forward: It then drives forward with opposite lock to swing the front end around, aligning the car’s front wheels toward the target chassis.
