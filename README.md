@@ -31,6 +31,7 @@ Our final project implements a fully autonomous tow truck capable of locating, a
   - Straighten Out & Approach: Finally, it straightens the wheels and moves forward slowly to position its front center precisely in front of the chassis, maintaining a fixed stopping distance (e.g., 0.2 m) so the towing hook can engage.
  
 https://drive.google.com/file/d/1KutY3HxdIYGCIqWJ8cxIVXh8-trw-SjU/view?resourcekey
+![image](images/3_point_turn.png)
 
 #### Node 3: Hook and Vanish
 - Once the car is aligned and stopped at the ideal grabbing distance, the Hook and Vanish node takes over.
