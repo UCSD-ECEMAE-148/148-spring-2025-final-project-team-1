@@ -46,4 +46,4 @@ https://drive.google.com/file/d/1KutY3HxdIYGCIqWJ8cxIVXh8-trw-SjU/view?resourcek
 - Upon reaching the station’s GPS point, the robocar stops, lowers the hook to release the chassis, and confirms that the car has been delivered to the correct location.
 
 ## Gantt Chart
-![image](images/gantt.png)
+![image](images/gantt)
