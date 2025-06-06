@@ -38,6 +38,7 @@ https://drive.google.com/file/d/1KutY3HxdIYGCIqWJ8cxIVXh8-trw-SjU/view?resourcek
 - This node commands a mini‐servo motor which lowers the hook until it contacts a designated “hook point” on the chassis, we have magnets on the hook and disabled chassis to help it attach if there are small deviations.
 - Once the hook is lowered to the right position, we command the servo to retract, lifting the chassis’s eyelet snugly against the car’s frame.
 - With the chassis now firmly latched, the car starts driving away.
+
 ![image](images/towing_arm.png)
 
 ## Desired Features
@@ -58,4 +59,5 @@ Special thanks to **Professor Jack Silberman** and the Teaching Assistants **Ale
 ### UCSD MAE 148 Program
 We are grateful for the comprehensive curriculum and resources provided by the **UCSD MAE/ECE 148** program.
 
-![images](images/jsoe.png)
+<img src="images/jsoe.png" width="300px" alt="Demo image" />
+
