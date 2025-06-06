@@ -46,22 +46,12 @@ def main():
         servo.angle = COUNTER_CLOCKWISE
         time.sleep(ROTATION_TIME_540)
         
-        # Step 2: Stop and pause
-        print("Step 2: Stopping and pausing for 5 seconds...")
-        servo.angle = STOP
-        time.sleep(5)
-        
-        # Step 3: Rotate clockwise 1080 degrees back
-        print("Step 3: Rotating CLOCKWISE 1080 degrees back...")
-        servo.angle = CLOCKWISE
-        time.sleep(ROTATION_TIME_1080)
-        
-        # Step 4: Final stop
+        # Step 2: Final stop
         print("Step 4: Final stop")
         servo.angle = STOP
         time.sleep(2)
         
-        print("hook_release complete!")
+        print("hook_release_pt1 complete!")
         
     except KeyboardInterrupt:
         print("\nTest interrupted - stopping servo")
