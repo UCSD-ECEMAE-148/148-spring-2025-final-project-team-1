@@ -59,5 +59,7 @@ Special thanks to **Professor Jack Silberman** and the Teaching Assistants **Ale
 ### UCSD MAE 148 Program
 We are grateful for the comprehensive curriculum and resources provided by the **UCSD MAE/ECE 148** program.
 
-<img src="images/jsoe.png" width="300px" alt="Demo image" />
+
+
+<img src="images/jsoe.png" width="500px" alt="Demo image" />
 
