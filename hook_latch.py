@@ -27,7 +27,8 @@ CLOCKWISE = 45           # Medium speed clockwise
 
 # Timing for 540 degrees (1.5 full rotations)
 # Adjust this value based on your servo's actual speed
-ROTATION_TIME_1080 = 13.0  # seconds - you may need to adjust this
+ROTATION_TIME_1080 = 13.0  
+ROTATION_TIME_1080 = 6.0
 
 def main():
     print("Starting 1080° rotation test...")
@@ -40,7 +41,7 @@ def main():
         servo.angle = STOP
         time.sleep(2)
         
-        # Step 1: Rotate counter-clockwise 540 degrees
+        # Step 1: Rotate counter-clockwise 1080 degrees
         print("Step 1: Rotating COUNTER-CLOCKWISE 1080 degrees...")
         servo.angle = COUNTER_CLOCKWISE
         time.sleep(ROTATION_TIME_1080)
@@ -53,14 +54,14 @@ def main():
         # Step 3: Rotate clockwise 540 degrees back
         print("Step 3: Rotating CLOCKWISE 540 degrees back...")
         servo.angle = CLOCKWISE
-        time.sleep(ROTATION_TIME_1080)
+        time.sleep(ROTATION_TIME_540)
         
         # Step 4: Final stop
         print("Step 4: Final stop")
         servo.angle = STOP
         time.sleep(2)
         
-        print("540° rotation test completed!")
+        print("hook_latch complete!")
         
     except KeyboardInterrupt:
         print("\nTest interrupted - stopping servo")
