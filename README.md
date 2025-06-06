@@ -1,10 +1,14 @@
 ﻿# 148-spring-2025-final-project-team-1
+
+
+
+ 
 ## Overview
 Our final project implements a fully autonomous tow truck capable of locating, approaching, and retrieving a disabled chassis without any human intervention. At its core, the system is built as a ROS 2 package named `autonomous_tow_car`, with three coordinated nodes handling perception, maneuvering, and actuation.
 
 ## Team Members
 
-| Name | Major |
+| Name | Department |
 |------|-------|
 | Nicole Li | ECE |
 | Shaurya Agarwal| ECE |
